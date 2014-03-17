@@ -7,10 +7,23 @@ provisioner:
 
 platforms:
   - name: ubuntu-12.04
-
-suites:
-  - name: vpn
+    driver_config:
+      network:
+      - [private_network, ip: 33.33.33.10]
     run_list:
       - recipe[apt::default]
+    attributes:
+      l2tp-ipsec:
+        public_interface: eth1
+
+suites:
+  - name: l2tp-ipsec
+    run_list:
       - recipe[l2tp-ipsec::default]
     attributes:
+      l2tp-ipsec:
+        users:
+        - username: bob
+          vpn_password: bobsecret
+        - username: alice
+          vpn_password: alicesecret
