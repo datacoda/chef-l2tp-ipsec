@@ -1,19 +1,32 @@
 l2tp-ipsec cookbook
 ===================
 
-Cookbook to create a L2TP/IPSEC VPN
+Cookbook to create a L2TP/IPSEC VPN.  It installs
 
+- `openswan` - For IPSEC.
+- `xl2tpd` - For l2tpd.
 
 Requirements
 ------------
 
+This VPN server requires full virtualization like KVM or XEN.  It does not work under OpenVZ.
+
 Recommended cookbooks:
- - `firewall`
- - `monit`
+- `firewall`
+- `monit`
 
 
 Usage
 -----
+
+1. If you have a unique setup of net interfaces, override private_interface and public_interface as need be.
+
+2. Set the attribute `preshared_key`
+
+3. To add users, fill the node attribute `users`.  It accepts an array of users
+
+     # [ { username: bob, vpn_password: mypass } ]
+
 
 Attributes
 ----------
