@@ -19,7 +19,8 @@ platforms:
 suites:
   - name: l2tp-ipsec
     run_list:
-      - recipe[l2tp-ipsec::default]
+      - recipe[firewall::default]
+      - recipe[fake::default]
     attributes:
       l2tp-ipsec:
         users:
