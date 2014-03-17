@@ -17,17 +17,6 @@
 # limitations under the License.
 #
 
-#find_public_ip = Mixlib::ShellOut.new("ifconfig #{node['vpn-server']['public_interface']} | grep \"inet addr\" | awk 'BEGIN{FS=\":\"}{print $2}' | awk '{print $1}'")
-#find_private_ip = Mixlib::ShellOut.new("ifconfig #{node['vpn-server']['private_interface']} | grep \"inet addr\" | awk 'BEGIN{FS=\":\"}{print $2}' | awk '{print $1}'")
-
-#find_public_ip.run_command
-#find_private_ip.run_command
-
-
-#node.default['vpn-server']['public_ip'] = find_public_ip.stdout.strip
-#node.default['vpn-server']['private_ip'] = find_private_ip.stdout.strip
-#
-
 %w(lsof ppp xl2tpd openswan).each do |p|
   package p
 end
