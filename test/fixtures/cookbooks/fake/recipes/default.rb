@@ -1,6 +1,3 @@
-include_recipe 'l2tp-ipsec::default'
-
-
 # open standard ssh port, enable firewall
 firewall_rule 'ssh' do
   port     22
@@ -8,9 +5,12 @@ firewall_rule 'ssh' do
   notifies :enable, 'firewall[ufw]'
 end
 
-include_recipe 'l2tp-ipsec::firewall'
-
-
 firewall 'ufw' do
   action :nothing
 end
+
+include_recipe 'l2tp-ipsec::default'
+
+include_recipe 'l2tp-ipsec::firewall'
+
+include_recipe 'l2tp-ipsec::monit'

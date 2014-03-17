@@ -1,9 +1,9 @@
 #
 # Cookbook Name:: l2tp-ipsec
-# Attributes:: default
+# Recipe:: monit
 #
 # Copyright (C) 2014 Nephila Graphic
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -16,4 +16,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+directory '/etc/monit/scripts' do
+  owner   'root'
+  group   'root'
+  mode    00755
+  action  :create
+end
+
+template '/etc/monit/scripts/ipsec_status.sh' do
+  source  'monit/ipsec_status.sh.erb'
+  user    'root'
+  group   'root'
+  mode    00755
+end
+
+monitrc 'ipsec' do
+  template_source 'monit/ipsec.conf.erb'
+  template_cookbook 'l2tp-ipsec'
+end
+
+monitrc 'xl2tpd' do
+  template_source 'monit/xl2tpd.conf.erb'
+  template_cookbook 'l2tp-ipsec'
+end
 

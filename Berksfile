@@ -4,4 +4,5 @@ metadata
 
 cookbook 'apt'
 cookbook 'firewall'
+cookbook 'monit'
 cookbook 'fake', :path => './test/fixtures/cookbooks/fake'

@@ -12,6 +12,8 @@ platforms:
       - [private_network, ip: 33.33.33.10]
     run_list:
       - recipe[apt::default]
+      - recipe[monit::default]
+      - recipe[monit::ubuntu12fix]
     attributes:
       l2tp-ipsec:
         public_interface: eth1
@@ -22,6 +24,9 @@ suites:
       - recipe[firewall::default]
       - recipe[fake::default]
     attributes:
+      monit:
+        poll_period: 30
+        poll_start_delay: 0
       l2tp-ipsec:
         users:
         - username: bob
