@@ -12,7 +12,7 @@ Requirements
 This VPN server requires full virtualization like KVM or XEN.  It does not work under OpenVZ.
 
 Recommended cookbooks:
-- `firewall`
+- `debnetwork`
 - `monit`
 
 

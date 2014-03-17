@@ -21,7 +21,7 @@ platforms:
 suites:
   - name: l2tp-ipsec
     run_list:
-      - recipe[firewall::default]
+      - recipe[debnetwork::default]
       - recipe[fake::default]
     attributes:
       monit:

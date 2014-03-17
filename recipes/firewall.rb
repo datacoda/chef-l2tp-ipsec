@@ -18,6 +18,10 @@
 #
 
 
+
+include_recipe 'debnetwork::default'
+
+
 firewall_rule 'ESP' do
   port          50
   destination   '0.0.0.0/0'
@@ -50,31 +54,6 @@ firewall_rule 'ipsec-nat-t' do
   notifies      :enable, 'firewall[ufw]'
 end
 
-# Firewalls are slightly different for OpenVZ
-is_openvz_ve = node['virtualization']['system'] == 'openvz' && node['virtualization']['role'] == 'guest'
-
-
-template '/etc/ufw/before.rules' do
-  source      'ufw.before.rules.erb'
-  mode        00640
-  variables(
-      :is_openvz_ve => is_openvz_ve,
-      :ppp_link_network => node['l2tp-ipsec']['ppp_link_network'],
-      :private_interface => node['l2tp-ipsec']['private_interface']
-  )
-  notifies    :enable, 'firewall[ufw]', :delayed
-end
-
-
-template '/etc/ufw/sysctl.conf' do
-  source      'ufw.sysctl.conf.erb'
-  mode        00644
-  variables(
-      :is_openvz_ve => is_openvz_ve,
-      :send_redirects => node['l2tp-ipsec']['send_redirects']
-  )
-  notifies    :enable, 'firewall[ufw]', :delayed
-end
 
 firewall 'ufw' do
   action :nothing

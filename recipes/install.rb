@@ -47,7 +47,7 @@ template '/etc/ipsec.conf' do
       :private_ip => node['l2tp-ipsec']['private_ip']
   )
 
-  notifies :restart, 'service[ipsec]', :delayed
+  notifies :restart, 'service[ipsec]'
 end
 
 
@@ -56,22 +56,28 @@ template '/etc/ipsec.secrets' do
   owner   'root'
   group   'root'
   mode    0600
+  sensitive true
 
   variables(
       :public_ip => node['l2tp-ipsec']['public_ip'],
       :preshared_key => node['l2tp-ipsec']['preshared_key']
   )
-  notifies :restart, 'service[ipsec]', :delayed
+  notifies :restart, 'service[ipsec]'
 end
 
 
 template "#{node['l2tp-ipsec']['ppp_path']}/chap-secrets" do
   source 'chap-secrets.erb'
+  owner   'root'
+  group   'root'
+  mode    0600
+  sensitive true
+
   variables(
       :users => node['l2tp-ipsec']['users']
   )
-  notifies :restart, 'service[xl2tpd]', :delayed
-  notifies :restart, 'service[ipsec]', :delayed
+  notifies :restart, 'service[xl2tpd]'
+  notifies :restart, 'service[ipsec]'
 end
 
 
@@ -82,7 +88,7 @@ template "#{node['l2tp-ipsec']['xl2tpd_path']}/xl2tpd.conf" do
       :virtual_interface_ip => node['l2tp-ipsec']['virtual_interface_ip'],
       :pppoptfile => node['l2tp-ipsec']['pppoptfile']
   )
-  notifies :restart, 'service[xl2tpd]', :delayed
+  notifies :restart, 'service[xl2tpd]'
 end
 
 template node['l2tp-ipsec']['pppoptfile'] do
@@ -90,13 +96,14 @@ template node['l2tp-ipsec']['pppoptfile'] do
   variables(
       :dns_servers => node['l2tp-ipsec']['dns_servers']
   )
-  notifies :restart, 'service[xl2tpd]', :delayed
+  notifies :restart, 'service[xl2tpd]'
 end
 
 
 # Turn off redirects
 #
-node['l2tp-ipsec']['send_redirects'].each do |interface|
+Dir["/proc/sys/net/ipv4/conf/*/send_redirects"].each do |interface|
+  interface.sub!(/^\/proc\/sys\//, '')
 
   # Turn it off immediately if needed
   execute "turn off #{interface}_redirects" do
