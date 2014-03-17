@@ -1,0 +1,16 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-12.04
+
+suites:
+  - name: vpn
+    run_list:
+      - recipe[apt::default]
+      - recipe[l2tp-ipsec::default]
+    attributes:
