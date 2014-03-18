@@ -16,6 +16,11 @@ describe service('xl2tpd') do
   it { should be_monitored_by('monit') }
 end
 
+describe service('ufw') do
+  it { should be_enabled }
+  it { should be_running }
+end
+
 describe service('ipsec') do
   it { should be_enabled }
   it { should be_running }
@@ -26,18 +31,19 @@ end
 # References:
 #  https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_12.04.html
 #  http://riobard.com/2010/04/30/l2tp-over-ipsec-ubuntu/
+describe 'Linux kernel parameters' do
+  context linux_kernel_parameter('net.ipv4.ip_forward') do
+    its(:value) { should eq 1 }
+  end
 
-describe file('/proc/sys/net/ipv4/ip_forward') do
-  it { should contain '1' }
-end
+  context linux_kernel_parameter('net.ipv4.conf.all.accept_redirects') do
+    its(:value) { should eq 0 }
+  end
 
-describe file('/proc/sys/net/ipv4/conf/all/accept_redirects') do
-  it { should contain '0' }
-end
-
-%w{all eth0 eth1}.each do |interface|
-  describe file("/proc/sys/net/ipv4/conf/#{interface}/send_redirects") do
-    it { should contain '0' }
+  %w{all eth0 eth1}.each do |interface|
+    context linux_kernel_parameter("net.ipv4.conf.#{interface}.send_redirects") do
+      its(:value) { should eq 0 }
+    end
   end
 end
 
