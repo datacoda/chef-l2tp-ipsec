@@ -19,15 +19,8 @@
 
 
 
-include_recipe 'debnetwork::default'
+include_recipe 'debnetwork'
 
-
-firewall_rule 'ESP' do
-  port          50
-  destination   '0.0.0.0/0'
-  action        :allow
-  notifies      :enable, 'firewall[ufw]'
-end
 
 firewall_rule 'IKEv1' do
   port          500
@@ -58,3 +51,28 @@ end
 firewall 'ufw' do
   action :nothing
 end
+
+
+debnetwork 'net' do
+  ipv4_preferred    true
+  ipv4_forward      true
+
+  # Disable send_redirects to keep openswan from complaining
+  # http://riobard.com/2010/04/30/l2tp-over-ipsec-ubuntu/
+  accept_redirects  false
+  send_redirects    false
+
+  # Allow IPSEC authentication using ESP protocol
+  # see https://wiki.gentoo.org/wiki/IPsec_L2TP_VPN_server
+  input "-p esp -j ACCEPT"
+  output "-p esp -j ACCEPT"
+
+  # Forward traffic from the ppp to the outbound link.
+  postrouting "-s #{node['l2tp-ipsec']['ppp_link_network']} -o #{node['l2tp-ipsec']['private_interface']} -j MASQUERADE"
+
+  # Forward packets between the ppp and the external interface
+  forward "-i #{node['l2tp-ipsec']['private_interface']} -o ppp+ -m state --state RELATED,ESTABLISHED -j ACCEPT"
+  forward "-i ppp+ -m state --state RELATED,ESTABLISHED -j ACCEPT"
+  forward "-i ppp+ -o #{node['l2tp-ipsec']['private_interface']} -j ACCEPT"
+end
+

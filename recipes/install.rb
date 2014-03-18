@@ -35,6 +35,11 @@ service 'ipsec' do
 end
 
 
+# Create configuration files for Ubuntu 12.04
+# References:
+#  https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_12.04.html
+#  http://riobard.com/2010/04/30/l2tp-over-ipsec-ubuntu/
+
 template '/etc/ipsec.conf' do
   source 'ipsec.conf.erb'
   owner   'root'

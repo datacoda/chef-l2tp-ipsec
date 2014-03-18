@@ -19,20 +19,3 @@
 
 include_attribute 'l2tp-ipsec::default'
 
-
-# Disable send_redirects
-override['debnetwork']['send_redirects']['action'] = 'disable'
-
-
-# Forward traffic from the ppp to the outbound link.
-override['debnetwork']['postrouting_rules'] = [
-    "-s #{node['l2tp-ipsec']['ppp_link_network']} -o #{node['l2tp-ipsec']['private_interface']} -j MASQUERADE"
-]
-
-
-# Forward packets between the ppp and the external interface
-override['debnetwork']['forward_rules'] = [
-    "-i #{node['l2tp-ipsec']['private_interface']} -o ppp+ -m state --state RELATED,ESTABLISHED -j ACCEPT",
-    "-i ppp+ -m state --state RELATED,ESTABLISHED -j ACCEPT",
-    "-i ppp+ -o #{node['l2tp-ipsec']['private_interface']} -j ACCEPT"
-]
