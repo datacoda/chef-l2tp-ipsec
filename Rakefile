@@ -5,7 +5,12 @@ desc 'Run Chef style checks'
 FoodCritic::Rake::LintTask.new(:foodcritic) do |t|
   t.options = {
       fail_tags: ['any'],
-      tags: []
+      tags: [
+        '~FC007',
+        '~FC009',
+        '~FC034',
+        '~FC044'
+      ]
   }
 end
 
