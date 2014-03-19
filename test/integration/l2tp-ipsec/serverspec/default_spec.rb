@@ -73,3 +73,11 @@ end
     it { should_not be_executable.by('others') }
   end
 end
+
+
+# Check that test users are created
+describe file('/etc/ppp/chap-secrets') do
+  # format fred            *       flintstone
+  its(:content)  { should match /alice\s+l2tpd\s+alicesecret/ }
+  its(:content)  { should match /bob\s+l2tpd\s+bobsecret/ }
+end
