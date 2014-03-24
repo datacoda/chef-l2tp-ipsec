@@ -21,18 +21,31 @@
 default['l2tp-ipsec']['public_interface'] = 'eth0'
 default['l2tp-ipsec']['private_interface'] = 'eth0'
 
+Chef::Log.debug "Looking for public interface #{node['l2tp-ipsec']['public_interface']}"
+Chef::Log.debug "Looking for private interface #{node['l2tp-ipsec']['private_interface']}"
 
-node['network']['interfaces'][ node['l2tp-ipsec']['public_interface'] ]['addresses'].each do |addr, info|
-  if info['family'] == 'inet'
-    default['l2tp-ipsec']['public_ip'] = addr
+# Performs a search through all interfaces, looking for Global addresses.
+# It allows for multi-address interfaces.
+node['network']['interfaces'].each do |iface, idata|
+  if iface =~ /#{node['l2tp-ipsec']['public_interface']}(:[0-9]+)?/
+    idata['addresses'].each do |addr, info|
+      if info['family'] == 'inet' && info['scope'] == 'Global'
+        default['l2tp-ipsec']['public_ip'] = addr
+        Chef::Log.info "Using public IP #{addr} for l2tp-ipsec"
+      end
+    end
+  end
+
+  if iface =~ /#{node['l2tp-ipsec']['private_interface']}(:[0-9]+)?/
+    idata['addresses'].each do |addr, info|
+      if info['family'] == 'inet' && info['scope'] == 'Global'
+        default['l2tp-ipsec']['private_ip'] = addr
+        Chef::Log.info "Using private IP #{addr} for l2tp-ipsec"
+      end
+    end
   end
 end
 
-node['network']['interfaces'][ node['l2tp-ipsec']['private_interface'] ]['addresses'].each do |addr, info|
-  if info['family'] == 'inet'
-    default['l2tp-ipsec']['private_ip'] = addr
-  end
-end
 
 default['l2tp-ipsec']['users'] = []
 
