@@ -1,7 +1,4 @@
-require 'serverspec'
 require 'spec_helper'
-
-include Serverspec::Helper::Exec
 
 # Ensure the packages are installed
 %w{ppp xl2tpd openswan}.each do |p|

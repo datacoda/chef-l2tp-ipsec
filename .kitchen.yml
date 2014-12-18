@@ -1,12 +1,15 @@
 ---
-driver:
-  name: vagrant
+driver_plugin: vagrant
+driver_config:
+  require_chef_omnibus: true
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
 
 platforms:
   - name: ubuntu-12.04
+    driver:
+      box: chef/ubuntu-12.04
     driver_config:
       network:
       - [private_network, ip: 33.33.33.10]
@@ -19,6 +22,8 @@ platforms:
         public_interface: eth1
 
   - name: ubuntu-14.04
+    driver:
+      box: chef/ubuntu-14.04
     driver_config:
       network:
       - [private_network, ip: 33.33.33.11]
