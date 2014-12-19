@@ -31,13 +31,31 @@ template '/etc/monit/scripts/ipsec_status.sh' do
   mode    00755
 end
 
-monitrc 'ipsec' do
-  template_source 'monit/ipsec.conf.erb'
-  template_cookbook 'l2tp-ipsec'
+monit_check 'ipsec' do
+  check_type 'program'
+  check_id  '/etc/monit/scripts/ipsec_status.sh'
+  tests [
+    {
+      'condition' => 'status != 0',
+      'action'    => 'exec "/etc/init.d/ipsec restart"'
+    },
+    {
+      'condition' => '5 restarts within 5 cycles',
+      'action'    => 'timeout'
+    },
+  ]
 end
 
-monitrc 'xl2tpd' do
-  template_source 'monit/xl2tpd.conf.erb'
-  template_cookbook 'l2tp-ipsec'
+monit_check 'xl2tpd' do
+  check_id  '/var/run/xl2tpd.pid'
+  group     'app'
+  start     '/etc/init.d/xl2tpd start'
+  stop      '/etc/init.d/xl2tpd stop'
+  tests [
+    {
+      'condition' => '5 restarts within 5 cycles',
+      'action'    => 'timeout'
+    },
+  ]
 end
 

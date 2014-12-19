@@ -13,7 +13,7 @@ This VPN server requires full virtualization like KVM or XEN.  It does not work 
 
 Recommended cookbooks:
 - `debnetwork`
-- `monit`
+- `monit-ng`
 
 
 Usage
