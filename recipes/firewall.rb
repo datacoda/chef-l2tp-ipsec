@@ -53,6 +53,13 @@ firewall 'ufw' do
 end
 
 
+# The setup for Ubuntu 14.04 has changed somewhat.
+if node[:platform_version].include?("12.")
+  packet_routing = "-s #{node['l2tp-ipsec']['ppp_link_network']} -o #{node['l2tp-ipsec']['private_interface']} -j MASQUERADE"
+elsif node[:platform_version].include?("14.")
+  packet_routing = "-j SNAT --to-source #{node['l2tp-ipsec']['public_ip']} -o #{node['l2tp-ipsec']['private_interface']}"
+end
+
 debnetwork 'net' do
   ipv4_preferred    true
   ipv4_forward      true
@@ -68,7 +75,7 @@ debnetwork 'net' do
   output "-p esp -j ACCEPT"
 
   # Forward traffic from the ppp to the outbound link.
-  postrouting "-s #{node['l2tp-ipsec']['ppp_link_network']} -o #{node['l2tp-ipsec']['private_interface']} -j MASQUERADE"
+  postrouting packet_routing
 
   # Forward packets between the ppp and the external interface
   forward "-i #{node['l2tp-ipsec']['private_interface']} -o ppp+ -m state --state RELATED,ESTABLISHED -j ACCEPT"
