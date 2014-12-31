@@ -104,15 +104,3 @@ template node['l2tp-ipsec']['pppoptfile'] do
   )
   notifies :restart, 'service[xl2tpd]'
 end
-
-# Turn off redirects
-#
-Dir['/proc/sys/net/ipv4/conf/*/send_redirects'].each do |interface|
-  interface.sub!(%r{^/proc/sys/}, '')
-
-  # Turn it off immediately if needed
-  execute "turn off #{interface}_redirects" do
-    command "echo 0 > /proc/sys/#{interface}"
-    not_if "grep 0 /proc/sys/#{interface}"
-  end
-end

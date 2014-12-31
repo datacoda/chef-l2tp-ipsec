@@ -40,7 +40,7 @@ Recipes
 Just calls install.
 
 ### install
-Installs the packages and configures it.  This does not include any iptable management.
+Installs the packages and configures it.  This does not include any iptable or send_redirects management.
 
 To complete the installation, either include the firewall recipe or add your own masquerade routing.
 
@@ -65,7 +65,10 @@ COMMIT
 ```
 
 ### firewall
-Uses the UFW firewall and opens the required ports.  Also adds postrouting to the iptables.
+Uses the UFW firewall and opens the required ports.  Also adds postrouting to the iptables. Also turns off redirects, etc according to
+
+https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_12.04.html
+https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_14.04.html
 
 ### monit
 Configures monit to watch the ipsec and xl2tpd services.
