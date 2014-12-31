@@ -4,8 +4,7 @@ describe 'fake::default' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new(
       platform: 'ubuntu',
-      version: '14.04',
-      step_into: 'firewall_ex'
+      version: '14.04'
       ) do |node|
         node.set['virtualization']['system'] = 'openvz'
         node.set['l2tp-ipsec']['users'] = [

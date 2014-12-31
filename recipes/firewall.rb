@@ -22,7 +22,6 @@ firewall_rule 'IKEv1' do
   protocol :udp
   destination '0.0.0.0/0'
   action :allow
-  notifies :enable, 'firewall_ex[ufw]'
 end
 
 # required for the initial connect
@@ -31,7 +30,6 @@ firewall_rule 'l2tp' do
   protocol :udp
   destination '0.0.0.0/0'
   action :allow
-  notifies :enable, 'firewall_ex[ufw]'
 end
 
 firewall_rule 'ipsec-nat-t' do
@@ -39,7 +37,6 @@ firewall_rule 'ipsec-nat-t' do
   protocol :udp
   destination '0.0.0.0/0'
   action :allow
-  notifies :enable, 'firewall_ex[ufw]'
 end
 
 # The setup for Ubuntu 14.04 has changed somewhat.
