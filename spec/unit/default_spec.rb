@@ -21,14 +21,6 @@ describe 'fake::default' do
     expect(chef_run).to allow_firewall_rule('IKEv1')
     expect(chef_run).to allow_firewall_rule('l2tp')
     expect(chef_run).to allow_firewall_rule('ipsec-nat-t')
-
-    expect(chef_run).to create_template('/etc/ufw/before.rules')
-    expect(chef_run).to create_template('/etc/ufw/before6.rules')
-    expect(chef_run).to create_template('/etc/ufw/after.rules')
-    expect(chef_run).to create_template('/etc/ufw/after6.rules')
-
-    expect(chef_run).to create_template('/etc/ufw/sysctl.conf')
-    expect(chef_run).to create_template('/etc/default/ufw')
   end
 
   it 'has ipsec' do

@@ -56,6 +56,10 @@ describe port(4500) do
   it { should be_listening.with('udp') }
 end
 
+describe port(80) do
+  it { should_not be_listening.with('tcp') }
+end
+
 # Check password security
 %w(/etc/ppp/chap-secrets /etc/xl2tpd/l2tp-secrets /etc/ipsec.secrets).each do |f|
   describe file(f) do
@@ -73,4 +77,19 @@ describe file('/etc/ppp/chap-secrets') do
   # format fred            *       flintstone
   its(:content) { should match(/alice\s+l2tpd\s+alicesecret/) }
   its(:content) { should match(/bob\s+l2tpd\s+bobsecret/) }
+end
+
+describe file('/etc/ufw/before.rules') do
+  its(:content)  { should match(/-A ufw-before-input -p esp -j ACCEPT/) }
+  its(:content)  { should match(/-A ufw-before-output -p esp -j ACCEPT/) }
+
+  #its(:content)  { should match(/-A POSTROUTING -s 10.10.10.10 -j MASQUERADE/) }
+
+  its(:content)  { should match %r{-o ppp\+ -m state --state RELATED,ESTABLISHED -j ACCEPT} }
+  its(:content)  { should match %r{-i ppp\+ -m state --state RELATED,ESTABLISHED -j ACCEPT} }
+end
+
+describe file('/etc/ufw/sysctl.conf') do
+  its(:content) { should match %r{net/ipv4/conf/all/accept_redirects=0} }
+  its(:content) { should match %r{net/ipv4/conf/all/send_redirects=0} }
 end
