@@ -80,13 +80,11 @@ describe file('/etc/ppp/chap-secrets') do
 end
 
 describe file('/etc/ufw/before.rules') do
-  its(:content)  { should match(/-A ufw-before-input -p esp -j ACCEPT/) }
-  its(:content)  { should match(/-A ufw-before-output -p esp -j ACCEPT/) }
+  its(:content) { should match(/-A ufw-before-input -p esp -j ACCEPT/) }
+  its(:content) { should match(/-A ufw-before-output -p esp -j ACCEPT/) }
 
-  #its(:content)  { should match(/-A POSTROUTING -s 10.10.10.10 -j MASQUERADE/) }
-
-  its(:content)  { should match %r{-o ppp\+ -m state --state RELATED,ESTABLISHED -j ACCEPT} }
-  its(:content)  { should match %r{-i ppp\+ -m state --state RELATED,ESTABLISHED -j ACCEPT} }
+  its(:content) { should match(/-o ppp\+ -m state --state RELATED,ESTABLISHED -j ACCEPT/) }
+  its(:content) { should match(/-i ppp\+ -m state --state RELATED,ESTABLISHED -j ACCEPT/) }
 end
 
 describe file('/etc/ufw/sysctl.conf') do
