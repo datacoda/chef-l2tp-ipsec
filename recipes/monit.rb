@@ -18,22 +18,22 @@
 #
 
 directory '/etc/monit/scripts' do
-  owner   'root'
-  group   'root'
-  mode    00755
-  action  :create
+  owner 'root'
+  group 'root'
+  mode 00755
+  action :create
 end
 
 template '/etc/monit/scripts/ipsec_status.sh' do
-  source  'monit/ipsec_status.sh.erb'
-  user    'root'
-  group   'root'
-  mode    00755
+  source 'monit/ipsec_status.sh.erb'
+  user 'root'
+  group 'root'
+  mode 00755
 end
 
 monit_check 'ipsec' do
   check_type 'program'
-  check_id  '/etc/monit/scripts/ipsec_status.sh'
+  check_id '/etc/monit/scripts/ipsec_status.sh'
   tests [
     {
       'condition' => 'status != 0',
@@ -42,20 +42,19 @@ monit_check 'ipsec' do
     {
       'condition' => '5 restarts within 5 cycles',
       'action'    => 'timeout'
-    },
+    }
   ]
 end
 
 monit_check 'xl2tpd' do
-  check_id  '/var/run/xl2tpd.pid'
-  group     'app'
-  start     '/etc/init.d/xl2tpd start'
-  stop      '/etc/init.d/xl2tpd stop'
+  check_id '/var/run/xl2tpd.pid'
+  group 'app'
+  start '/etc/init.d/xl2tpd start'
+  stop '/etc/init.d/xl2tpd stop'
   tests [
     {
       'condition' => '5 restarts within 5 cycles',
       'action'    => 'timeout'
-    },
+    }
   ]
 end
-

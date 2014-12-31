@@ -1,5 +1,6 @@
 l2tp-ipsec cookbook
 ===================
+[![Build Status](https://travis-ci.org/nephilagraphic-cookbooks/l2tp-ipsec.svg?branch=master)](https://travis-ci.org/nephilagraphic-cookbooks/l2tp-ipsec)
 
 Cookbook to create a L2TP/IPSEC VPN.  It installs
 
@@ -12,8 +13,8 @@ Requirements
 This VPN server requires full virtualization like KVM or XEN.  It does not work under OpenVZ.
 
 Recommended cookbooks:
-- `debnetwork`
-- `monit-ng`
+- `firewall-ex` - for setting up port forwarding, etc
+- `monit-ng` - for l2tp-ipsec::monit recipe.
 
 
 Usage

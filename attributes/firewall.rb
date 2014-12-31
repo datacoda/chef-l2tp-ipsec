@@ -18,4 +18,3 @@
 #
 
 include_attribute 'l2tp-ipsec::default'
-

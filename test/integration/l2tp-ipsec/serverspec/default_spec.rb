@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 # Ensure the packages are installed
-%w{ppp xl2tpd openswan}.each do |p|
+%w(ppp xl2tpd openswan).each do |p|
   describe package(p) do
     it { should be_installed }
   end
@@ -23,7 +23,6 @@ describe service('ipsec') do
   it { should be_running }
 end
 
-
 # Ensure network is setup properly
 # References:
 #  https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_12.04.html
@@ -37,13 +36,12 @@ describe 'Linux kernel parameters' do
     its(:value) { should eq 0 }
   end
 
-  %w{all eth0 eth1}.each do |interface|
+  %w(all eth0 eth1).each do |interface|
     context linux_kernel_parameter("net.ipv4.conf.#{interface}.send_redirects") do
       its(:value) { should eq 0 }
     end
   end
 end
-
 
 # Check ports
 describe port(500) do
@@ -58,9 +56,8 @@ describe port(4500) do
   it { should be_listening.with('udp') }
 end
 
-
 # Check password security
-%w{/etc/ppp/chap-secrets /etc/xl2tpd/l2tp-secrets /etc/ipsec.secrets}.each do |f|
+%w(/etc/ppp/chap-secrets /etc/xl2tpd/l2tp-secrets /etc/ipsec.secrets).each do |f|
   describe file(f) do
     it { should be_file }
     it { should be_owned_by 'root' }
@@ -71,10 +68,9 @@ end
   end
 end
 
-
 # Check that test users are created
 describe file('/etc/ppp/chap-secrets') do
   # format fred            *       flintstone
-  its(:content)  { should match /alice\s+l2tpd\s+alicesecret/ }
-  its(:content)  { should match /bob\s+l2tpd\s+bobsecret/ }
+  its(:content) { should match(/alice\s+l2tpd\s+alicesecret/) }
+  its(:content) { should match(/bob\s+l2tpd\s+bobsecret/) }
 end
