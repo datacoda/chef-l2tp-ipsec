@@ -1,6 +1,6 @@
 l2tp-ipsec cookbook
 ===================
-[![Build Status](https://travis-ci.org/nephilagraphic-cookbooks/l2tp-ipsec.svg?branch=master)](https://travis-ci.org/nephilagraphic-cookbooks/l2tp-ipsec)
+[![Build Status](https://travis-ci.org/dataferret/chef-l2tp-ipsec.svg?branch=master)](https://travis-ci.org/dataferret/chef-l2tp-ipsec)
 
 Cookbook to create a L2TP/IPSEC VPN.  It installs
 
