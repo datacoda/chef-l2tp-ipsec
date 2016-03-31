@@ -11,6 +11,7 @@ config setup
     protostack=netkey
     force_keepalive=yes
     keep_alive=60
+    listen=<%= @public_ip %>
 
 conn L2TP-PSK-noNAT
     authby=secret
