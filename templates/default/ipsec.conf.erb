@@ -7,7 +7,7 @@ version 2
 config setup
     dumpdir=/var/run/pluto/
     nat_traversal=yes
-    virtual_private=%v4:<%= @ppp_link_network %>,%v4:<%= @private_ip %>/32
+    virtual_private=<% if !@virtual_private.nil? -%><%= @virtual_private %>,<% end -%>%v4:!<%= @ppp_link_network %>,%v4:!<%= @private_ip %>/32
     protostack=netkey
     force_keepalive=yes
     keep_alive=60
