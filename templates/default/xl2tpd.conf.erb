@@ -8,10 +8,9 @@ ipsec saref = yes
 ip range = <%= @virtual_ip_range %>
 local ip = <%= @virtual_interface_ip %>
 ; refuse chap = yes
-refuse pap = yes
+; refuse pap = yes
 require authentication = yes
 ppp debug = yes
 pppoptfile = <%= @pppoptfile %>
 length bit = yes
 unix authentication = yes
-
