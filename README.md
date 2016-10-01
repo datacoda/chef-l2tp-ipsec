@@ -1,6 +1,6 @@
 l2tp-ipsec cookbook
 ===================
-[![Build Status](https://travis-ci.org/dataferret/chef-l2tp-ipsec.svg?branch=master)](https://travis-ci.org/dataferret/chef-l2tp-ipsec)
+[![Build Status](https://travis-ci.org/datacoda/chef-l2tp-ipsec.svg?branch=master)](https://travis-ci.org/datacoda/chef-l2tp-ipsec)
 
 Cookbook to create a L2TP/IPSEC VPN.  It installs
 
@@ -76,10 +76,10 @@ Configures monit to watch the ipsec and xl2tpd services.
 
 License & Authors
 -----------------
-- Author:: Ted Chen (<ted@nephilagraphic.com>)
+- Author:: Li-Te Chen (<datacoda@gmail.com>)
 
 ```text
-Copyright 2014, Nephila Graphic
+Copyright 2014-2016 Nephila Graphic, Li-Te Chen
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
