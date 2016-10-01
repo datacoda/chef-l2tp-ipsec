@@ -5,7 +5,7 @@ include_recipe 'monit-ng::default'
 # open standard ssh port, enable firewall
 firewall_rule 'ssh' do
   port 22
-  action :allow
+  action :create
 end
 
 include_recipe 'l2tp-ipsec::default'
