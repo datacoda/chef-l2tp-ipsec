@@ -25,7 +25,7 @@ default['firewall']['redhat7_iptables'] = true
 # Note: can't get the rules to work on ipv6
 default['firewall']['ipv6_enabled'] = false
 
-default['firewall']['iptables']['defaults'][:ruleset] = {
+default['firewall']['iptables']['defaults']['ruleset'] = {
   '*filter' => 1,
   ':INPUT DROP' => 2,
   ':FORWARD DROP' => 3,

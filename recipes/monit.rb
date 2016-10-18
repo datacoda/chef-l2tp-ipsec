@@ -20,7 +20,7 @@
 directory '/etc/monit/scripts' do
   owner 'root'
   group 'root'
-  mode 00755
+  mode '0755'
   action :create
 end
 
@@ -28,7 +28,7 @@ template '/etc/monit/scripts/ipsec_status.sh' do
   source 'monit/ipsec_status.sh.erb'
   user 'root'
   group 'root'
-  mode 00755
+  mode '0755'
 end
 
 monit_check 'ipsec' do

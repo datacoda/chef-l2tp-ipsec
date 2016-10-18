@@ -53,13 +53,6 @@ firewall_rule 'ipsec-nat-t' do
   command :allow
 end
 
-firewall_rule 'http' do
-  port 80
-  protocol :tcp
-  destination '0.0.0.0/0'
-  command :allow
-end
-
 # The setup for Ubuntu 14.04 has changed somewhat.
 firewall_rule '12.x packet-routing' do
   raw "-A POSTROUTING -s #{node['l2tp-ipsec']['ppp_link_network']} -o #{node['l2tp-ipsec']['private_interface']} -j MASQUERADE"
@@ -75,7 +68,7 @@ end
 
 # Allow IPSEC authentication using ESP protocol
 # see https://wiki.gentoo.org/wiki/IPsec_L2TP_VPN_server
-firewall_rule 'esp' do
+firewall_rule 'esp_in' do
   protocol 50
   command :allow
 end
@@ -86,7 +79,7 @@ firewall_rule 'esp_out' do
   command :allow
 end
 
-firewall_rule 'ah' do
+firewall_rule 'ah_in' do
   protocol 51
   command :allow
 end
@@ -120,7 +113,7 @@ firewall_rule 'forward_established_connection' do
 end
 
 firewall_rule 'forward_established_ppp' do
-  raw "-A FORWARD -i ppp+ -m state --state RELATED,ESTABLISHED -j ACCEPT"
+  raw '-A FORWARD -i ppp+ -m state --state RELATED,ESTABLISHED -j ACCEPT'
 end
 
 firewall_rule 'forward_ppp_out' do
@@ -150,6 +143,6 @@ template '/etc/sysctl.d/20-firewall.conf' do
   notifies :restart, 'service[procps]'
 end
 
-service "procps" do
+service 'procps' do
   action :nothing
 end

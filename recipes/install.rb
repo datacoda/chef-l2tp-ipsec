@@ -48,7 +48,7 @@ template '/etc/ipsec.conf' do
   source 'ipsec.conf.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode '0644'
 
   variables(
     ppp_link_network: node['l2tp-ipsec']['ppp_link_network'],
@@ -63,7 +63,7 @@ template '/etc/ipsec.secrets' do
   source 'ipsec.secrets.erb'
   owner 'root'
   group 'root'
-  mode 0600
+  mode '0600'
   sensitive true
 
   variables(
@@ -77,7 +77,7 @@ template "#{node['l2tp-ipsec']['ppp_path']}/chap-secrets" do
   source 'chap-secrets.erb'
   owner 'root'
   group 'root'
-  mode 0600
+  mode '0600'
   sensitive true
 
   variables(

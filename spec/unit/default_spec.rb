@@ -5,22 +5,21 @@ describe 'fake::default' do
     ChefSpec::SoloRunner.new(
       platform: 'ubuntu',
       version: '14.04'
-      ) do |node|
-        node.set['virtualization']['system'] = 'openvz'
-        node.set['l2tp-ipsec']['users'] = [
-          { username: 'bob', vpn_password: 'bobsecret' },
-          { username: 'alice', vpn_password: 'alicesecret' }
-        ]
-      end.converge('fake::default')
+    ) do |node|
+      node.set['virtualization']['system'] = 'openvz'
+      node.set['l2tp-ipsec']['users'] = [
+        { username: 'bob', vpn_password: 'bobsecret' },
+        { username: 'alice', vpn_password: 'alicesecret' }
+      ]
+    end.converge('fake::default')
   end
 
-  it 'has ufw' do
-    expect(chef_run).to install_package('ufw')
-    expect(chef_run).to enable_firewall_ex('ufw')
-    expect(chef_run).to allow_firewall_rule('ssh')
-    expect(chef_run).to allow_firewall_rule('IKEv1')
-    expect(chef_run).to allow_firewall_rule('l2tp')
-    expect(chef_run).to allow_firewall_rule('ipsec-nat-t')
+  it 'has firewall' do
+    expect(chef_run).to install_firewall('iptables')
+    expect(chef_run).to create_firewall_rule('loopback')
+    expect(chef_run).to create_firewall_rule('IKEv1')
+    expect(chef_run).to create_firewall_rule('l2tp')
+    expect(chef_run).to create_firewall_rule('ipsec-nat-t')
   end
 
   it 'has ipsec' do
@@ -46,7 +45,7 @@ describe 'fake::default' do
 
   it 'has monitoring' do
     expect(chef_run).to install_package('monit')
-    expect(chef_run).to start_service('monit')
+    expect(chef_run).to enable_service('monit')
     expect(chef_run).to create_directory('/etc/monit/conf.d')
     expect(chef_run).to create_template('/etc/monit/monitrc')
   end

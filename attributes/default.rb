@@ -24,7 +24,7 @@ Chef::Log.debug "Looking for public interface #{node['l2tp-ipsec']['public_inter
 Chef::Log.debug "Looking for private interface #{node['l2tp-ipsec']['private_interface']}"
 
 def filter_global_addresses(addresses)
-  addresses.map do | idata |
+  addresses.map do |idata|
     idata['addresses'].select do |_, info|
       info['family'] == 'inet' && info['scope'] == 'Global'
     end.keys
