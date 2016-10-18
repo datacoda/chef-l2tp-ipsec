@@ -10,7 +10,7 @@ supports 'ubuntu'
 
 # Required if you use the l2tp-ipsec::firewall recipe
 # to enable port forwarding.
-recommends 'firewall-ex'
+recommends 'firewall'
 
 # Required if you use the l2tp-ipsec::monit recipe
 recommends 'monit-ng'
