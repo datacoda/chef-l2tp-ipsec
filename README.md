@@ -1,20 +1,22 @@
 l2tp-ipsec cookbook
 ===================
+[![Cookbook Version](https://img.shields.io/cookbook/v/l2tp-ipsec.svg)](https://supermarket.chef.io/cookbooks/l2tp-ipsec)
+[![Dependency Status](http://img.shields.io/gemnasium/datacoda/chef-l2tp-ipsec.svg?style=flat)](https://gemnasium.com/datacoda/chef-l2tp-ipsec)
 [![Build Status](https://travis-ci.org/datacoda/chef-l2tp-ipsec.svg?branch=master)](https://travis-ci.org/datacoda/chef-l2tp-ipsec)
+[![License](https://img.shields.io/badge/license-Apache_2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 Cookbook to create a L2TP/IPSEC VPN.  It installs
 
 - `openswan` - For IPSEC.
 - `xl2tpd` - For l2tpd.
+- `firewall` - Sets up iptables for port forwarding, etc
+- `sysctl` - Sets up nic forwarding.
+- `monit-ng` - For l2tp-ipsec::monit recipe.
 
 Requirements
 ------------
 
 This VPN server requires full virtualization like KVM or XEN.  It does not work under OpenVZ.
-
-Recommended cookbooks:
-- `firewall-ex` - for setting up port forwarding, etc
-- `monit-ng` - for l2tp-ipsec::monit recipe.
 
 
 Usage
@@ -65,7 +67,7 @@ COMMIT
 ```
 
 ### firewall
-Uses the UFW firewall and opens the required ports.  Also adds postrouting to the iptables. Also turns off redirects, etc according to
+Uses the iptables to open the required ports.  Also adds postrouting to the iptables. Also turns off redirects, etc according to
 
 https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_12.04.html
 https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_14.04.html
