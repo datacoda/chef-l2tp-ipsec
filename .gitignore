@@ -12,7 +12,6 @@ Berksfile.lock
 /tmp
 
 # Bundler
-Gemfile.lock
 bin/*
 .bundle/*
 
