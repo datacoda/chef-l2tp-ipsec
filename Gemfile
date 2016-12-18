@@ -19,15 +19,15 @@ group :kitchen_vagrant do
 end
 
 group :development do
-  gem 'ruby_gntp'
   gem 'growl'
-  gem 'rb-fsevent'
   gem 'guard'
-  gem 'guard-kitchen'
   gem 'guard-foodcritic'
+  gem 'guard-kitchen'
   gem 'guard-rspec'
   gem 'guard-rubocop'
   gem 'rake'
+  gem 'rb-fsevent'
+  gem 'ruby_gntp'
 end
 
 gem 'chef-sugar'

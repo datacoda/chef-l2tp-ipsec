@@ -1,11 +1,15 @@
 ---
 driver_plugin: vagrant
+driver_config:
+  require_chef_omnibus: <%= ENV['CHEF_VERSION'] || '12.5.1' %>
+  ssh:
+    insert_key: false
 
 provisioner:
   name: chef_zero
 
 platforms:
-  - name: ubuntu-12.04
+  - name: ubuntu-12.04-i386
     driver_config:
       network:
       - [private_network, ip: 33.33.33.10]
@@ -13,7 +17,7 @@ platforms:
       l2tp-ipsec:
         public_interface: eth1
 
-  - name: ubuntu-14.04
+  - name: ubuntu-14.04-i386
     driver_config:
       network:
       - [private_network, ip: 33.33.33.11]
