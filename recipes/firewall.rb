@@ -17,7 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe 'firewall'
+include_recipe 'firewall::default'
+include_recipe 'sysctl::default'
 
 firewall 'iptables' do
   action :install
@@ -122,27 +123,43 @@ end
 
 # Send redirects aren't normally in the sysctl file.  We'll need to pull
 # up all the interfaces
-send_redirects_rules = []
-send_redirects_value = 0
+
+sysctl_param 'net.ipv4.ip_forward' do
+  value 1
+end
+
+sysctl_param 'net/ipv6/conf/default/forwarding' do
+  value 0
+end
+
+sysctl_param 'net/ipv6/conf/all/forwarding' do
+  value 0
+end
+
+sysctl_param 'net.ipv4.conf.all.accept_redirects' do
+  value 0
+end
+
+sysctl_param 'net/ipv4/conf/all/accept_redirects' do
+  value 0
+end
+
+sysctl_param 'net/ipv4/conf/default/accept_redirects' do
+  value 0
+end
+
+sysctl_param 'net/ipv6/conf/all/accept_redirects' do
+  value 0
+end
+
+sysctl_param 'net/ipv6/conf/default/accept_redirects' do
+  value 0
+end
 
 Dir['/proc/sys/net/ipv4/conf/*/send_redirects'].each do |interface|
   interface.sub!(%r{/proc/sys/}, '')
-  send_redirects_rules << "#{interface}=#{send_redirects_value}"
-end
 
-template '/etc/sysctl.d/20-firewall.conf' do
-  source 'sysctl.conf.erb'
-  mode '0644'
-  variables(
-    is_openvz_ve: false,
-    ipv4_forward: true,
-    ipv6_forward: false,
-    accept_redirects: false,
-    send_redirects_rules: send_redirects_rules
-  )
-  notifies :restart, 'service[procps]'
-end
-
-service 'procps' do
-  action :nothing
+  sysctl_param interface do
+    value 0
+  end
 end

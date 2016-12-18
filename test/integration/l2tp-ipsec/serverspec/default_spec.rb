@@ -90,7 +90,7 @@ describe file('/etc/iptables/rules.v4') do
   its(:content) { should match(/-i ppp\+ -m state --state RELATED,ESTABLISHED -j ACCEPT/) }
 end
 
-describe file('/etc/sysctl.d/20-firewall.conf') do
+describe file('/etc/sysctl.d/99-chef-attributes.conf') do
   its(:content) { should match %r{net/ipv4/conf/all/accept_redirects=0} }
   its(:content) { should match %r{net/ipv4/conf/all/send_redirects=0} }
 end
