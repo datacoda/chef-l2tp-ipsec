@@ -79,15 +79,18 @@ describe file('/etc/ppp/chap-secrets') do
   its(:content) { should match(/bob\s+l2tpd\s+bobsecret/) }
 end
 
-describe file('/etc/ufw/before.rules') do
-  its(:content) { should match(/-A ufw-before-input -p esp -j ACCEPT/) }
-  its(:content) { should match(/-A ufw-before-output -p esp -j ACCEPT/) }
+describe file('/etc/iptables/rules.v4') do
+  its(:content) { should match(/-A INPUT -p (esp|50) .*-j ACCEPT/) }
+  its(:content) { should match(/-A OUTPUT -p (esp|50) .*-j ACCEPT/) }
+
+  its(:content) { should match(/-A INPUT -p (ah|51) .*-j ACCEPT/) }
+  its(:content) { should match(/-A OUTPUT -p (ah|51) .*-j ACCEPT/) }
 
   its(:content) { should match(/-o ppp\+ -m state --state RELATED,ESTABLISHED -j ACCEPT/) }
   its(:content) { should match(/-i ppp\+ -m state --state RELATED,ESTABLISHED -j ACCEPT/) }
 end
 
-describe file('/etc/ufw/sysctl.conf') do
+describe file('/etc/sysctl.d/99-chef-attributes.conf') do
   its(:content) { should match %r{net/ipv4/conf/all/accept_redirects=0} }
   its(:content) { should match %r{net/ipv4/conf/all/send_redirects=0} }
 end

@@ -18,3 +18,21 @@
 #
 
 include_attribute 'l2tp-ipsec::default'
+
+default['firewall']['ubuntu_iptables'] = true
+default['firewall']['redhat7_iptables'] = true
+
+# Note: can't get the rules to work on ipv6
+default['firewall']['ipv6_enabled'] = false
+
+default['firewall']['iptables']['defaults']['ruleset'] = {
+  '*filter' => 1,
+  ':INPUT DROP' => 2,
+  ':FORWARD DROP' => 3,
+  ':OUTPUT ACCEPT' => 4,
+  'COMMIT_FILTER' => 100,
+  '*nat' => 101,
+  ':POSTROUTING ACCEPT [0:0]' => 102,
+  '-F POSTROUTING' => 103,
+  'COMMIT_NAT' => 200
+}
