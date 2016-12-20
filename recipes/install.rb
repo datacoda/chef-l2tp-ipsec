@@ -51,6 +51,7 @@ template '/etc/ipsec.conf' do
   mode '0644'
 
   variables(
+    virtual_private: node['l2tp-ipsec']['virtual_private'],
     ppp_link_network: node['l2tp-ipsec']['ppp_link_network'],
     public_ip: node['l2tp-ipsec']['public_ip'],
     private_ip: node['l2tp-ipsec']['private_ip']
