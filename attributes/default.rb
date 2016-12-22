@@ -51,6 +51,7 @@ Chef::Log.info "Using public IP #{public_ip} for l2tp-ipsec"
 default['l2tp-ipsec']['private_ip'] = private_ip
 Chef::Log.info "Using private IP #{private_ip} for l2tp-ipsec"
 
+default['l2tp-ipsec']['authentication_mode'] = 'chap' # or pam
 default['l2tp-ipsec']['users'] = []
 
 default['l2tp-ipsec']['virtual_ip_range'] = '10.55.55.5-10.55.55.100'

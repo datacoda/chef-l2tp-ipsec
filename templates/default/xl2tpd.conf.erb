@@ -7,10 +7,15 @@ ipsec saref = yes
 [lns default]
 ip range = <%= @virtual_ip_range %>
 local ip = <%= @virtual_interface_ip %>
-; refuse chap = yes
-; refuse pap = yes
+
 require authentication = yes
 ppp debug = yes
 pppoptfile = <%= @pppoptfile %>
 length bit = yes
+
+<% case @authentication_mode %>
+<% when 'pam' %> 
 unix authentication = yes
+<% when 'chap' %>
+refuse pap = yes
+<% end %>

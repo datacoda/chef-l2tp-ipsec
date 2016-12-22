@@ -94,3 +94,13 @@ describe file('/etc/sysctl.d/99-chef-attributes.conf') do
   its(:content) { should match %r{net/ipv4/conf/all/accept_redirects=0} }
   its(:content) { should match %r{net/ipv4/conf/all/send_redirects=0} }
 end
+
+describe file('/etc/ppp/options.xl2tpd') do
+  its(:content) { should_not match(/login/) }
+  its(:content) { should match(/require-mschap-v2/) }
+end
+
+describe file('/etc/xl2tpd/xl2tpd.conf') do
+  its(:content) { should_not match(/unix authentication\s+=\s+yes/) }
+  its(:content) { should match(/refuse pap\s+=\s+yes/) }
+end

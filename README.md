@@ -26,13 +26,18 @@ Usage
 
 2. Set the attribute `preshared_key`
 
-3. To add users, fill the node attribute `users`.  It accepts an array of users
+3. To add users, fill the node attribute `users`.  It accepts an array of users.  Only used during chap authentication mode.
 
      # [ { username: bob, vpn_password: mypass } ]
 
 
 Attributes
 ----------
+
+- `['l2tp-ipsec']['authentication_mode']` - :chap or :pam, defaults to chap
+- `['l2tp-ipsec']['users']` - an array of users and passwords (see usage)
+- `['l2tp-ipsec']['dns_servers']` = ['8.8.8.8', '8.8.4.4']
+- `['l2tp-ipsec']['preshared_key']` = 'preshared_secret'
 
 
 Recipes

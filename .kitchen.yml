@@ -27,7 +27,7 @@ platforms:
 
 
 suites:
-  - name: l2tp-ipsec
+  - name: l2tp-ipsec-chap
     run_list:
       - recipe[fake::default]
     attributes:
@@ -37,8 +37,20 @@ suites:
         poll_period: 30
         poll_start_delay: 0
       l2tp-ipsec:
+        authentication_mode: chap
         users:
         - username: bob
           vpn_password: bobsecret
         - username: alice
           vpn_password: alicesecret
+  - name: l2tp-ipsec-pam
+    run_list:
+      - recipe[fake::default]
+    attributes:
+      firewall:
+        allow_ssh: true
+      monit:
+        poll_period: 30
+        poll_start_delay: 0
+      l2tp-ipsec:
+        authentication_mode: pam

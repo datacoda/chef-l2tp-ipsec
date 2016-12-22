@@ -74,23 +74,51 @@ template '/etc/ipsec.secrets' do
   notifies :restart, 'service[ipsec]'
 end
 
-template "#{node['l2tp-ipsec']['ppp_path']}/chap-secrets" do
-  source 'chap-secrets.erb'
-  owner 'root'
-  group 'root'
-  mode '0600'
-  sensitive true
+case node['l2tp-ipsec']['authentication_mode']
+when 'chap'
+  template "#{node['l2tp-ipsec']['ppp_path']}/chap-secrets" do
+    source 'chap-secrets.erb'
+    owner 'root'
+    group 'root'
+    mode '0600'
+    sensitive true
 
-  variables(
-    users: node['l2tp-ipsec']['users']
-  )
-  notifies :restart, 'service[xl2tpd]'
-  notifies :restart, 'service[ipsec]'
+    variables(
+      users: node['l2tp-ipsec']['users']
+    )
+    notifies :restart, 'service[xl2tpd]'
+    notifies :restart, 'service[ipsec]'
+  end
+when 'pam'
+  template "#{node['l2tp-ipsec']['ppp_path']}/pap-secrets" do
+    source 'pap-secrets.erb'
+    owner 'root'
+    group 'root'
+    mode '0600'
+    sensitive true
+
+    notifies :restart, 'service[xl2tpd]'
+    notifies :restart, 'service[ipsec]'
+  end
+
+  template '/etc/pam.d/ppp' do
+    source 'ppp.erb'
+    owner 'root'
+    group 'root'
+    mode '0600'
+    sensitive true
+
+    notifies :restart, 'service[xl2tpd]'
+    notifies :restart, 'service[ipsec]'
+  end
+else
+  raise "Invalid authentication_mode.  Expects 'chap' or 'pam', got '#{node['l2tp-ipsec']['authentication_mode']}'"
 end
 
 template "#{node['l2tp-ipsec']['xl2tpd_path']}/xl2tpd.conf" do
   source 'xl2tpd.conf.erb'
   variables(
+    authentication_mode: node['l2tp-ipsec']['authentication_mode'],
     virtual_ip_range: node['l2tp-ipsec']['virtual_ip_range'],
     virtual_interface_ip: node['l2tp-ipsec']['virtual_interface_ip'],
     pppoptfile: node['l2tp-ipsec']['pppoptfile']
@@ -101,6 +129,7 @@ end
 template node['l2tp-ipsec']['pppoptfile'] do
   source 'options.xl2tpd.erb'
   variables(
+    authentication_mode: node['l2tp-ipsec']['authentication_mode'],
     dns_servers: node['l2tp-ipsec']['dns_servers']
   )
   notifies :restart, 'service[xl2tpd]'
